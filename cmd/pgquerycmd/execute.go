@@ -24,21 +24,35 @@ var (
 	connCount   int
 	queryCount  int
 	queryDelay  time.Duration
+
+	executeMode string
 )
 
+func validateExecuteParams() error {
+	if executeMode != "psql" && executeMode != "native" {
+		return errors.Errorf("--mode value is wrong")
+	}
+
+	return nil
+}
+
 func runQueryExecutor(cmd *cobra.Command, args []string) error {
+	if err := validateExecuteParams(); err != nil {
+		panic(errors.Wrap(err, "failed to validate command parameters"))
+	}
+
 	query := args[0]
 
 	var err error
 	var data datagen.DataGenerator
 	if csvFilePath != "" {
-		if data, err = datagen.NewCSVFile(csvFilePath); err != nil {
+		if data, err = datagen.NewCSVFile(csvFilePath, '|'); err != nil {
 			panic(errors.Wrap(err, "failed to open csv file with query's parameters"))
 		}
 	}
 
 	ctx, _ := signal.NotifyContext(context.Background(), os.Interrupt)
-	executor := pgquery.StartPgExecutor(ctx, dbConn, query, data, connCount, queryCount, queryDelay)
+	executor := pgquery.StartPgExecutor(ctx, executeMode == "psql", dbConn, query, data, connCount, queryCount, queryDelay)
 	executor.Wait()
 
 	return nil

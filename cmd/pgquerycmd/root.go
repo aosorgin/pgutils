@@ -18,6 +18,7 @@ func init() {
 	executeCmd.Flags().IntVar(&queryCount, "query-count", math.MaxInt, "queries count")
 	executeCmd.Flags().DurationVar(&queryDelay, "query-delay", time.Second, "query's delay")
 	executeCmd.Flags().StringVar(&csvFilePath, "csv-data", "", "CVS file with query data")
+	executeCmd.Flags().StringVar(&executeMode, "mode", "psql", "execution mode [psql, native]")
 
 	RootCmd.AddCommand(executeCmd)
 }

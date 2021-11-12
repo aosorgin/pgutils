@@ -11,6 +11,10 @@ import (
 	"gitlab.com/aosorgin/pggen/pkg/datagen"
 )
 
+type QueryProcessor interface {
+	Query(ctx context.Context) error
+	Close(ctx context.Context) error
+}
 type PgQueryExecutor struct {
 	wg sync.WaitGroup
 
@@ -27,14 +31,21 @@ func (qe *PgQueryExecutor) Close() {
 	qe.wg.Wait()
 }
 
-func StartPgExecutor(ctx context.Context, dbConn, query string, data datagen.DataGenerator, connCount, queryCount int, queryDelay time.Duration) *PgQueryExecutor {
+func StartPgExecutor(ctx context.Context, usePsql bool, dbConn, query string, data datagen.DataGenerator,
+	connCount, queryCount int, queryDelay time.Duration) *PgQueryExecutor {
 	res := &PgQueryExecutor{}
 
 	res.ctx, res.cancel = context.WithCancel(ctx)
 
 	for i := 0; i < connCount; i++ {
 		go func() {
-			conn, err := NewPgConnection(res.ctx, dbConn, query, data)
+			var proc QueryProcessor
+			var err error
+			if usePsql {
+				proc, err = NewPSQLExecutor(res.ctx, dbConn, query, data)
+			} else {
+				proc, err = NewPgConnection(res.ctx, dbConn, query, data)
+			}
 			if err != nil {
 				log.Error(err.Error())
 			}
@@ -43,7 +54,7 @@ func StartPgExecutor(ctx context.Context, dbConn, query string, data datagen.Dat
 			for q := 0; q < queryCount; q++ {
 				select {
 				case <-ticker:
-					if err := conn.Query(res.ctx); err != nil {
+					if err := proc.Query(res.ctx); err != nil {
 						log.Error(errors.Wrap(err, "failed to execute query"))
 					} else {
 						fmt.Print(".")

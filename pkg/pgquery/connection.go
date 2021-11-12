@@ -45,7 +45,7 @@ func (c *pgConnection) Close(ctx context.Context) error {
 	return nil
 }
 
-func NewPgConnection(ctx context.Context, dbConn, query string, data datagen.DataGenerator) (*pgConnection, error) {
+func NewPgConnection(ctx context.Context, dbConn, query string, data datagen.DataGenerator) (QueryProcessor, error) {
 	conn, err := pgx.Connect(context.Background(), dbConn)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to connect to database")
