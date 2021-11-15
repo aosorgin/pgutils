@@ -1,4 +1,4 @@
-module gitlab.com/aosorgin/pggen
+module gitlab.com/aosorgin/pgutil
 
 go 1.17
 

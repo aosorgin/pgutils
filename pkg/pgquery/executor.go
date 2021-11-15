@@ -8,7 +8,7 @@ import (
 
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"gitlab.com/aosorgin/pggen/pkg/datagen"
+	"gitlab.com/aosorgin/pgutil/pkg/datagen"
 )
 
 type QueryProcessor interface {

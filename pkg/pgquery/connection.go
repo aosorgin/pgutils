@@ -5,7 +5,7 @@ import (
 
 	"github.com/jackc/pgx/v4"
 	"github.com/pkg/errors"
-	"gitlab.com/aosorgin/pggen/pkg/datagen"
+	"gitlab.com/aosorgin/pgutil/pkg/datagen"
 )
 
 type pgConnection struct {

@@ -8,8 +8,8 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"gitlab.com/aosorgin/pggen/pkg/datagen"
-	"gitlab.com/aosorgin/pggen/pkg/pgquery"
+	"gitlab.com/aosorgin/pgutil/pkg/datagen"
+	"gitlab.com/aosorgin/pgutil/pkg/pgquery"
 )
 
 var executeCmd = &cobra.Command{
