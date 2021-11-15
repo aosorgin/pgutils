@@ -6,10 +6,10 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/aosorgin/pgutils/pkg/datagen"
+	"github.com/aosorgin/pgutils/pkg/pgquery"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"gitlab.com/aosorgin/pgutil/pkg/datagen"
-	"gitlab.com/aosorgin/pgutil/pkg/pgquery"
 )
 
 var executeCmd = &cobra.Command{

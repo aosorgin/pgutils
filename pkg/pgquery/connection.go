@@ -3,9 +3,9 @@ package pgquery
 import (
 	"context"
 
+	"github.com/aosorgin/pgutils/pkg/datagen"
 	"github.com/jackc/pgx/v4"
 	"github.com/pkg/errors"
-	"gitlab.com/aosorgin/pgutil/pkg/datagen"
 )
 
 type pgConnection struct {

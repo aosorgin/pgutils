@@ -1,4 +1,4 @@
-module gitlab.com/aosorgin/pgutil
+module github.com/aosorgin/pgutils
 
 go 1.17
 

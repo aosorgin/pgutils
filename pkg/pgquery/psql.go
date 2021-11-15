@@ -6,9 +6,9 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/aosorgin/pgutils/pkg/datagen"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"gitlab.com/aosorgin/pgutil/pkg/datagen"
 )
 
 type psqlExecutor struct {
